@@ -5,8 +5,8 @@ This repository includes the necessary code and models to reproduce the results 
 **Functional Magnetic Resonance Imaging data augmentation through conditional ICA** <br>
 *Badr Tajini, Hugo Richard, Bertrand Thirion* <br>
 MICCAI 2021 <br>
-arXiv:  [PDF]() <br>
-HAL : [PDF](https://hal.archives-ouvertes.fr/hal-03284313v1) <br>
+arXiv:  [[PDF]()] <br>
+HAL : [[PDF](https://hal.archives-ouvertes.fr/hal-03284313v1)] <br>
 
 ## Abstract 
 
