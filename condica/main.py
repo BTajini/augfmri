@@ -1,3 +1,5 @@
+# Authors: Hugo Richard, Badr Tajini
+# License: BSD 3 clause
 import numpy as np
 from sklearn.preprocessing import QuantileTransformer
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis

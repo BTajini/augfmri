@@ -1,3 +1,6 @@
+# Authors: Hugo Richard, Badr Tajini
+# License: BSD 3 clause
+
 from condica.main import condica
 from picard import picard
 from sklearn.preprocessing import QuantileTransformer

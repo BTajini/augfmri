@@ -1,3 +1,6 @@
+# Authors: Hugo Richard, Badr Tajini
+# License: BSD 3 clause
+
 from nilearn.datasets.neurovault import fetch_neurovault_ids
 from condica.main import condica
 from nilearn.input_data import NiftiMasker
@@ -57,4 +60,8 @@ for train, test in cv.split(X):
             np.concatenate([Y_train, Y_fakes]),
         ).score(X_test, Y_test)
     )
-print(np.mean(scores_noaug), np.mean(scores_withaug))
+
+print(
+    "Mean accuracy obtained without augmentation: %.3f" % np.mean(scores_noaug)
+)
+print("Mean accuracy obtained with CondICA: %.3f" % np.mean(scores_withaug))
