@@ -15,6 +15,20 @@ In this paper, we introduce Conditional Independent Components Analysis (Conditi
 
 ## Install
 
+- Clone this repository
+
+- Move into the cloned directory and execute
+
+`pip install -e .`
+
+- To run the example, go into the `examples` folder and run
+`python decoding.py`
+
+- To run the tests just run
+`pytest`
+
+
+
 
 ## Citation
 If you find this repository useful in your research, please cite:

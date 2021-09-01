@@ -7,5 +7,5 @@ setup(
     keywords="",
     packages=find_packages(),
     python_requires=">=3",
-    install_requires=['numpy>=1.12', 'scikit-learn>=0.23']
+    install_requires=['numpy>=1.12', 'scikit-learn>=0.23', 'nilearn', 'joblib']
 )

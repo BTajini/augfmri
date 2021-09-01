@@ -5,3 +5,4 @@ coverage
 numpy>=1.12
 sklearn>=0.23
 joblib
+nilearn
