@@ -13,9 +13,17 @@ In this paper, we introduce Conditional Independent Components Analysis (Conditi
 
 ## Framework Overview
 <p align="center">
-    <img src=.github/figures/conceptual_figure_1_v6_redim.png/> <br />
+    <img src=".github/figures/framework_overview.png"/> <br />
     <em>
     Figure 1: Overview of the proposed Conditional ICA approach, which generates surrogate data from Task and Rest fMRI data by synthesizing statistical maps that qualitatively fit the distribution of the original maps.
+    </em>
+</p>
+
+## Qualitative Results
+<p align="center">
+    <img src=".github/figures/qualitative_results.png"/> <br />
+    <em>
+    Figure 2: Data generation visualization. Visualization of real (Original) and synthetic brain maps from three generation methods: Conditional ICA (Ours), CGANs and GANS. Three cognitive tasks are shown (reward, punish and math).
     </em>
 </p>
 
