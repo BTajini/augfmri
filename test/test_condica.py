@@ -7,6 +7,7 @@ from sklearn.preprocessing import QuantileTransformer
 import numpy as np
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 from sklearn.model_selection import ShuffleSplit
+from sklearn.model_selection import cross_val_score
 
 
 def test_condica():
@@ -48,3 +49,24 @@ def test_condica():
         )
     print(np.mean(scores_noaug), np.mean(scores_withaug))
     assert np.mean(scores_noaug) < np.mean(scores_withaug)
+
+
+def test_condica_noY():
+    m_scores = []
+    m_scores_aug = []
+    n_components = 2
+    n_features = 10
+    n_samples = 1000
+    seed = 0
+    rng = np.random.RandomState(seed)
+    S = rng.laplace(size=(n_components, n_samples)).T
+    A = rng.randn(n_features, n_components)
+    X = S.dot(A.T)
+    clf = LinearDiscriminantAnalysis()
+    rng = np.random.RandomState()
+    X_fake  = condica(A, X, nb_fakes=n_samples)
+    X = np.row_stack([X, X_fake])
+    Y = np.array([0] * n_samples + [1] * n_samples)
+    scores = cross_val_score(clf, X, Y, cv=10)
+    assert np.max(scores) > 0.5
+    assert np.min(scores) < 0.5
