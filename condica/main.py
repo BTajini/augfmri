@@ -3,9 +3,10 @@
 import numpy as np
 from sklearn.preprocessing import QuantileTransformer
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
+from sklearn.covariance import LedoitWolf
 
 
-def condica(A, X, Y, nb_fakes, n_quantiles=1000):
+def condica(A, X, Y=None, nb_fakes=10, n_quantiles=1000):
     """
     Computes fake examples using ICA and mixing matrices estimated
     from rest data
@@ -50,30 +51,39 @@ def condica(A, X, Y, nb_fakes, n_quantiles=1000):
     quantile_transform = QuantileTransformer(
         output_distribution="normal", n_quantiles=n_quantiles
     )
-
-    S = np.linalg.lstsq(A, X.T, rcond=0)[0].T
+    S = X.dot(np.linalg.pinv(A).T)
     Z = quantile_transform.fit_transform(S)
 
-    # LDA is just used as a mean to compute
-    # class specific means and the global covariance.
-    # It uses Ledoit Wolf estimator internally.
-    lda = LinearDiscriminantAnalysis(
-        solver="lsqr", shrinkage="auto", store_covariance=True
-    )
-    lda.fit(Z, Y)
-    means = np.array(lda.means_)
-    cov = np.array(lda.covariance_)
-
-    Z_fakes = np.zeros((nb_fakes * len(unique_classes), n_components))
-    Y_fakes = np.zeros((nb_fakes * len(unique_classes)))
-
-    for i in range(len(unique_classes)):
-        class_i = slice(i * nb_fakes, (i + 1) * nb_fakes)
-        Z_fakes[class_i, :] = np.random.multivariate_normal(
-            means[i], cov, size=nb_fakes
+    if Y is None:
+        lw = LedoitWolf().fit(Z)
+        mean = lw.location_
+        cov = lw.covariance_
+        Z_fakes = np.random.multivariate_normal(mean, cov, size=nb_fakes)
+    else:
+        # LDA is just used as a mean to compute
+        # class specific means and the global covariance.
+        # It uses Ledoit Wolf estimator internally.
+        lda = LinearDiscriminantAnalysis(
+            solver="lsqr", shrinkage="auto", store_covariance=True
         )
-        Y_fakes[class_i] = np.repeat(unique_classes[i], nb_fakes)
+        lda.fit(Z, Y)
+        means = np.array(lda.means_)
+        cov = np.array(lda.covariance_)
+
+        Z_fakes = np.zeros((nb_fakes * len(unique_classes), n_components))
+        Y_fakes = np.zeros((nb_fakes * len(unique_classes)))
+
+        for i in range(len(unique_classes)):
+            class_i = slice(i * nb_fakes, (i + 1) * nb_fakes)
+            Z_fakes[class_i, :] = np.random.multivariate_normal(
+                means[i], cov, size=nb_fakes
+            )
+            Y_fakes[class_i] = np.repeat(unique_classes[i], nb_fakes)
 
     S_fakes = quantile_transform.inverse_transform(Z_fakes)
     X_fakes = np.dot(S_fakes, A.T)
-    return X_fakes, Y_fakes
+
+    if Y is None:
+        return X_fakes
+    else:
+        return X_fakes, Y_fakes
